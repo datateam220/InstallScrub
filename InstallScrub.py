@@ -393,3 +393,8 @@ class Fixture(object):
 			self.note_file.write("\n Tanko ID " + self.getTANKO_ID() + " updated at " + str(self.updateDate))
 		else:
 			pass		
+def checkNull(value):
+	if value is None:
+		return True
+	else:
+		return False
