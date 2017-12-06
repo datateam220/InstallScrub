@@ -106,13 +106,26 @@ class Dataset(object):
 						pass
 				comp_note = ""
 				for changed_attr, change in changed_attrs.iteritems():
-					self.logger.writerow([attr.getTANKO_ID(), changed_attr, change[0], change[1], datetime.datetime.now()])
+					if checkNull(change[0]) and not checkNull(change[1]):
+						fromVal = None
+						toVal = change[1].encode('utf-8')
+					elif checkNull(change[1]) and not checkNull(change[0]):
+						fromVal = change[1].encode('utf-8')
+						toVal = None
+					elif not checkNull(change[0]) and not checkNull(change[1]):
+						fromVal = change[0].encode('utf-8')
+						toVal = change[1].encode('utf-8')
+					else:
+						fromVal = None
+						toVal = None
+					self.logger.writerow([attr.getTANKO_ID().encode('utf-8'), changed_attr, fromVal, toVal, str(datetime.datetime.now())])
 					comp_note += changed_attr  + ", "
 				if self.records[ID].getINSDATE() is not None:
 					self.records[ID].updateFlag = "P"
 					if self.records[ID].getINSNOTE() is not None:
 						prev_note = comp_note[0:-2] + " attribute(s) updated; " + self.records[ID].getINSNOTE()
 						self.records[ID].createNote(prev_note)
+						self.note_file.write("\nTanko ID: "+ attr.getTANKO_ID() +": " + prev_note)
 				else:
 					self.records[ID].updateFlag = "Y"
 
@@ -339,6 +352,7 @@ class Fixture(object):
 
 	#assemble notes
 	def createNote(self, NOTE):
+		NOTE = NOTE.encode('utf-8')
 		if self.getINSNOTE() is None:
 			self.setINSNOTE(NOTE)
 		else:
