@@ -39,7 +39,7 @@ fc = r'T:\BSD\1_ Municipal Projects\PATH\TO\FeatureCLass'
 Fields = [field.name for field in arcpy.ListFields(fc)]
 
 #list of fields to add. If your project requires a non-standard install field set, add it to this list.
-fields_to_add = ['INSOLDLAMP','INSOLDWATT','INSVOLTAGE','INSFIXTURE','INSCOMPLET','INSPCSC','INSISSUES','INSCOMMENT','INSSTAT','INSNOTE','INSBY','INSDATE']
+fields_to_add = ['INSOLDLAMP','INSOLDWATT','INSVOLTAGE','INSFIXTURE','INSCOMPLET','INSPCSC','INSISSUES','INSCOMMENT','INSBY','INSDATE','INSSTAT','INSNOTE']
 
 #Parameter for populating default values. Default is True; set to False to avoid autopopulating default values.
 pop_defaults = True
