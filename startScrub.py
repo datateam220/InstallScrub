@@ -1,7 +1,7 @@
 import InstallScrub
 
 #Project Name
-project_name = "PROJECT_NAME"
+project_name = "TEST_NAME_CHANGE_ME"
 
 #Feature Classes
 Master_FC = r'T:\BSD\1_ Municipal Projects\MUNICIPALITY\GIS\DATA\PROJECT_GDB\FEATURE_DATASET\FEATURE_CLASS'
@@ -20,7 +20,7 @@ FCs = [Master_FC, Collector_FC]
 Fields = [Master_Fields,Collector_Fields]
 
 #Run Standard Scrub
-SESSION = InstallScrub.Session(project_name,FCs,Fields, voltage_threshold)
+SESSION = InstallScrub.Session(project_name,FCs,Fields,voltage_threshold)
 SESSION.openLogs()
 for i in FCs:
 	SESSION.add_Dataset()

@@ -39,8 +39,7 @@ fc = r'T:\BSD\1_ Municipal Projects\PATH\TO\FeatureCLass'
 Fields = [field.name for field in arcpy.ListFields(fc)]
 
 #list of fields to add. If your project requires a non-standard install field set, add it to this list.
-fields_to_add = ['INSOLDLAMP','INSOLDWATT','INSVOLTAGE','INSFIXTURE','INSCOMPLET','INSPCSC','INSISSUES','INSCOMMENT','INSBY','INSDATE','INSSTAT','INSNOTE']
-
+fields_to_add = ['INSOLDLAMP','INSOLDWATT','INSVOLTAGE','INSFIXTURE','INSCOMPLET','INSPCSC','INSISSUES','INSCOMMENT','INSSTAT','INSNOTE','INSBY','INSDATE','INSREPNUM','INVOICENUM']
 #Parameter for populating default values. Default is True; set to False to avoid autopopulating default values.
 pop_defaults = True
 
@@ -50,20 +49,25 @@ for f in fields_to_add:
 	try:
 		if not f in Fields:
 			print("Adding: " + f)
-			arcpy.AddField_management(fc, f, 'TEXT',field_length = 500)
+			if f in ['INSREPNUM', 'INVOICENUM']:
+				arcpy.AddField_management(fc, f, 'SHORT')
+			else:	
+				arcpy.AddField_management(fc, f, 'TEXT',field_length = 500)
 			print(f + " added." )
 		else:
 			print(f + " is already a field in the feature class.")
 	except:
 		print("An error occurred when adding " + f + " to the feature class.")
-print("add_install_fields.py Complete!")
+print("Done adding fields.")
 
 #set field values to defaults
 if pop_defaults:
-	defaults = {"INSOLDLAMP":"Choose...","INSOLDWATT":"Choose...","INSVOLTAGE":"Choose...","INSFIXTURE":"Choose...","INSCOMPLET":"Not Yet Installed","INSPCSC":"Choose...","INSISSUES":"None",'INSCOMMENT' : None,'INSSTAT' : None,'INSNOTE' : None,'INSBY' : None,'INSDATE' : None }
+	print("Populating default values.")
+	defaults = {"INSOLDLAMP":"Choose...","INSOLDWATT":"Choose...","INSVOLTAGE":"Choose...","INSFIXTURE":"Choose...","INSCOMPLET":"Not Yet Installed","INSPCSC":"Choose...","INSISSUES":"None",'INSCOMMENT' : None,'INSSTAT' : None,'INSNOTE' : None,'INSBY' : None,'INSDATE' : None,'INSREPNUM' : None,'INVOICENUM' : None }
 	with arcpy.da.UpdateCursor(fc,fields_to_add) as records:
 		for record in records:
 			for i in range(len(fields_to_add)):
 				record[i] = defaults[fields_to_add[i]]
 			records.updateRow(record)
+	print("Default values populated.")
 
